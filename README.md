@@ -158,7 +158,7 @@
 * [Dart 语言导览](http://dart.lidian.info/wiki/Language_Tour)
 
 ### Java
-
+*[chrom浏览器](https://www.google.cn/chrome/)    
 * [实时 Java 系列](http://www.ibm.com/developerworks/cn/java/j-rtj/?ca=j-h-p)
 
 * 使用 Eclipse 和 Java SE 6 创建独立 Web Services 应用程序
