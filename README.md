@@ -1,3 +1,48 @@
+*[android:]
+ 1.[鸿洋博客精选](https://blog.csdn.net/zyzhehe/article/details/77478341 )
+ 2.[优雅的实现多类型列表的Adapter](https://www.jianshu.com/p/753c40b9868f)
+ 3.[Android 应用开发（37）---RelativeLayout(相对布局)](https://blog.csdn.net/zhangbijun1230/article/details/82193388) 
+ 4.[Android6.0动态权限申请步骤以及需要注意的一些坑](https://www.jianshu.com/p/a51593817825) 
+ 5.[Android GreenDao使用教程](https://blog.csdn.net/qq_38520096/article/details/78833801) 
+ 6.[在线取色器](http://www.jiniannet.com/page/allcolor) 
+ 7.[android开发中常用的一些工具类](https://github.com/pengjianbo/ToolsFinal) 
+ 8.[Android开源快递查询应用——小马快递](https://www.jianshu.com/p/65866cfce082) 
+ 9.[各种快递查询Api接口(快递鸟)](https://blog.csdn.net/qxs965266509/article/details/51762707) 
+ 10.[android 快递查询（快递鸟）](https://www.jianshu.com/p/cec39ae52ec6?utm_campaign=maleskine&utm_content=note&utm_medium=pc_all_hots&utm_source=recommendation )
+ 11.[接入快递100实时查询接口的正确姿势](https://blog.csdn.net/backwriter/article/details/80942883) 
+ 12.[RecyclerView更全解析之 - 打造通用的下拉刷新上拉加载](https://www.jianshu.com/p/de511e4e23c6) 
+ 13.[ Android 自定义日历控件](https://blog.csdn.net/h7870181/article/details/8960478)
+ 14.[最全的Android 颜色透明度](https://blog.csdn.net/hewuzhao/article/details/78821954) 
+ 15.[Glide最新版V4使用指南](https://blog.csdn.net/u013005791/article/details/74532091) 
+ 16.[Android 图片加载框架Glide主流程源码分析](https://blog.csdn.net/msn465780/article/details/79279555) 
+ 
+
+*greenDao:
+    [greenDao](http://greenrobot.org/)
+
+
+*thymeleaf:
+   [thymeleaf](https://www.thymeleaf.org/)
+ 
+
+*js:
+   [Zepto 是一个轻量级的针对现代高级浏览器的 JavaScript 库] (https://www.bootcdn.cn/zepto/) 
+
+*JWT Authentication
+   [token](http://www.svlada.com/)
+
+
+*springboot资料网站
+      [springboot](http://springboot.fun/)
+
+
+*本地项目上传至github
+       [方式](https://blog.csdn.net/zamamiro/article/details/70172900)
+
+
+
+
+
 免费的编程中文书籍索引
 ============================
 
