@@ -1,4 +1,4 @@
-*[android:]<br>
+#[android:]<br>
  -1.[鸿洋博客精选](https://blog.csdn.net/zyzhehe/article/details/77478341 )<br>
  -2.[优雅的实现多类型列表的Adapter](https://www.jianshu.com/p/753c40b9868f)<br>
  -3.[Android 应用开发（37）---RelativeLayout(相对布局)](https://blog.csdn.net/zhangbijun1230/article/details/82193388) <br>
@@ -17,30 +17,30 @@
  -16.[Android 图片加载框架Glide主流程源码分析](https://blog.csdn.net/msn465780/article/details/79279555) <br>
  
 
-*greenDao:
+#greenDao:
     [greenDao](http://greenrobot.org/)
 
 
-*thymeleaf:
+#thymeleaf:
    [thymeleaf](https://www.thymeleaf.org/)
  
 
-*js:
+#js:
    [Zepto 是一个轻量级的针对现代高级浏览器的 JavaScript 库] (https://www.bootcdn.cn/zepto/) 
 
-*JWT Authentication
+#JWT Authentication
    [token](http://www.svlada.com/)
 
 
-*springboot资料网站
+#springboot资料网站
       [springboot](http://springboot.fun/)
 
 
-*本地项目上传至github
+#本地项目上传至github
        [方式](https://blog.csdn.net/zamamiro/article/details/70172900)
 
-*MAVEN
-  [Maven 将本地jar包添加到本地仓库](https://blog.csdn.net/zhujq_icode/article/details/80743394)
+#MAVEN
+ * [Maven 将本地jar包添加到本地仓库](https://blog.csdn.net/zhujq_icode/article/details/80743394)
 
 免费的编程中文书籍索引
 ============================
