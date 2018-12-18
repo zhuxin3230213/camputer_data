@@ -17,30 +17,30 @@
  -16.[Android 图片加载框架Glide主流程源码分析](https://blog.csdn.net/msn465780/article/details/79279555) <br>
  
 
-*greenDao:
+*greenDao:<br>
    [greenDao](http://greenrobot.org/)
 
 
-*thymeleaf:
+*thymeleaf:<br>
    [thymeleaf](https://www.thymeleaf.org/)
  
 
-*js:
-   [Zepto 是一个轻量级的针对现代高级浏览器的 JavaScript 库] (https://www.bootcdn.cn/zepto/) 
+*js:<br>
+   [Zepto 是一个轻量级的针对现代高级浏览器的 JavaScript 库](https://www.bootcdn.cn/zepto/) 
 
-*JWT Authentication
+*JWT Authentication<br>
    [token](http://www.svlada.com/)
 
 
-*springboot资料网站
-      [Spring Boot 参考指南- 英文版](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) <br>  
-      [springboot](http://springboot.fun/)
+*springboot资料网站<br>
+      [Spring Boot 官方文档- 英文版](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) <br>  
+      [springboot 参考大全](http://springboot.fun/)
 
 
-*本地项目上传至github
+*本地项目上传至github<br>
        [方式](https://blog.csdn.net/zamamiro/article/details/70172900)
 
-*maven
+*maven<br>
  [Maven 将本地jar包添加到本地仓库](https://blog.csdn.net/zhujq_icode/article/details/80743394)
 
 
