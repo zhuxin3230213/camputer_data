@@ -47,7 +47,7 @@
  [Maven 仓库](https://mvnrepository.com/)
  
 *springboot application.properties 配置文件格式.yaml<br>
-  [YAML人性化的数据序列化](https://yaml.org/)(br)
+  [YAML人性化的数据序列化](https://yaml.org/)<br>
   [Yaml学习笔记](https://blog.csdn.net/moshenglv/article/details/52084899)
   
 
