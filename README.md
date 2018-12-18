@@ -41,8 +41,11 @@
        [方式](https://blog.csdn.net/zamamiro/article/details/70172900)
 
 *maven<br>
- [Maven 将本地jar包添加到本地仓库](https://blog.csdn.net/zhujq_icode/article/details/80743394)
-
+ [Maven 将本地jar包添加到本地仓库](https://blog.csdn.net/zhujq_icode/article/details/80743394)<br>
+ [sonatype nexus repository](https://repository.sonatype.org/)<br>
+ [Maven 中央存储库搜索引擎](https://search.maven.org/)<br>
+ [Maven 仓库](https://mvnrepository.com/)
+ 
 
 
 免费的编程中文书籍索引
