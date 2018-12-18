@@ -34,8 +34,9 @@
 
 *springboot资料网站<br>
       [Spring Boot 官方文档- 英文版](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) <br>  
-      [springboot 参考大全](http://springboot.fun/)
-
+      [springboot 参考大全](http://springboot.fun/)<br>
+	  [Spring Data JPA - 参考文档](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/)
+        
 
 *本地项目上传至github<br>
        [方式](https://blog.csdn.net/zamamiro/article/details/70172900)
