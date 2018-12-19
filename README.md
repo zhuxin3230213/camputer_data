@@ -53,6 +53,7 @@
   
 *Linux<br>
   [Centos 下载官网](https://www.centos.org)<br>
+  [Linux下安装jdk8步骤详述](https://www.cnblogs.com/shihaiming/p/5809553.html) 
   
   
 
