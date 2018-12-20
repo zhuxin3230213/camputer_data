@@ -26,7 +26,7 @@
  
 
 *js:<br>
-   [Zepto 是一个轻量级的针对现代高级浏览器的 JavaScript 库](https://www.bootcdn.cn/zepto/) 
+   [Zepto 是一个轻量级的针对现代高级浏览器的 JavaScript 库](https://www.bootcdn.cn/zepto/)<br> 
    [npm 中文文档](https://www.npmjs.cn/)   
 *JWT Authentication<br>
    [token](http://www.svlada.com/)
@@ -53,7 +53,9 @@
   
 *Linux<br>
   [Centos 下载官网](https://www.centos.org)<br>
-  [Linux下安装jdk8步骤详述](https://www.cnblogs.com/shihaiming/p/5809553.html) 
+  [Linux下安装jdk8步骤详述](https://www.cnblogs.com/shihaiming/p/5809553.html)<br> 
+  [VMware Workstation虚拟机装GHOST Win7详细高清图文教程](http://www.verycang.com/vmware-workstation-ghost-win7.html)<br>
+  [windows系统iso镜像下载](https://msdn.itellyou.cn/)
   
   
 
