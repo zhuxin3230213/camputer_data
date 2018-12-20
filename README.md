@@ -27,7 +27,7 @@
 
 *js:<br>
    [Zepto 是一个轻量级的针对现代高级浏览器的 JavaScript 库](https://www.bootcdn.cn/zepto/) 
-
+   [npm 中文文档](https://www.npmjs.cn/)   
 *JWT Authentication<br>
    [token](http://www.svlada.com/)
 
