@@ -333,7 +333,6 @@ pom:
 
 5.最后一部分是main方法。这只是遵循应用程序入口点的Java约定的标准方法。我们的main方法SpringApplication通过调用委托给Spring Boot的类run。 SpringApplication引导我们的应用程序，启动Spring，然后启动自动配置的Tomcat Web服务器。我们需要Example.class作为参数传递给run方法，以告诉SpringApplication哪个是主要的Spring组件
 
-6.
 
 
 
