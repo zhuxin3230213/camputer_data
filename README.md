@@ -45,7 +45,8 @@
  [Maven 将本地jar包添加到本地仓库](https://blog.csdn.net/zhujq_icode/article/details/80743394)<br>
  [sonatype nexus repository](https://repository.sonatype.org/)<br>
  [Maven 中央存储库搜索引擎](https://search.maven.org/)<br>
- [Maven 仓库](https://mvnrepository.com/)
+ [Maven 仓库](https://mvnrepository.com/)<br>
+ [Maven教程](https://www.yiibai.com/maven)
  
 *springboot application.properties 配置文件格式.yaml<br>
   [YAML人性化的数据序列化](https://yaml.org/)<br>
@@ -60,7 +61,11 @@
 *React Native<br>
   [React Native中文网](https://reactnative.cn/)   
 
-  
+*java<br>
+ [图解EJB的体系结构](http://www.uml.org.cn/j2ee/2009112011.asp)<br>
+ [spring官方文档](https://spring.io/docs)<br>
+ [spring官方文档中文版](http://www.cnblogs.com/wangdaijun/p/6142168.html)<br>
+ [] 
 免费的编程中文书籍索引
 ============================
 
