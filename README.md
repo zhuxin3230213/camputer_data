@@ -80,6 +80,10 @@
  [AppCan官方文档](http://newdocx.appcan.cn/AppCan)<br>
  [浅谈Hybrid技术的设计与实现](https://www.cnblogs.com/yexiaochai/p/4921635.html) 
  
+*CAS SS0 单点登录
+ [CAS官方文档](https://apereo.github.io/cas/5.1.x/index.html)<br>
+ [CAS单点登录教程](https://blog.csdn.net/u010475041/article/category/7156505)<br>
+  
  
  
 免费的编程中文书籍索引
