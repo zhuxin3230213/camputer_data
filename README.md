@@ -73,6 +73,15 @@
 *在线工具<br>
  [常用在线工具](http://tool.oschina.net/) 
  
+*AppCan<br>
+ [AppCan官网](http://www.appcan.cn)<br>
+ [注册并登陆AppCan应用管理系统](http://dashboard.appcan.cn/app)<br>
+ [AppCan IDE工具下载](http://newdocx.appcan.cn/IDE/download)<br>
+ [AppCan官方文档](http://newdocx.appcan.cn/AppCan)<br>
+ [浅谈Hybrid技术的设计与实现](https://www.cnblogs.com/yexiaochai/p/4921635.html) 
+ 
+ 
+ 
 免费的编程中文书籍索引
 ============================
 
