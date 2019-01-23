@@ -83,151 +83,151 @@
 *CAS SS0 单点登录<br>
  [CAS官方文档](https://apereo.github.io/cas/5.1.x/index.html)<br>
  [CAS单点登录教程](https://blog.csdn.net/u010475041/article/category/7156505)<br>
-    
- 一．招生展示系统：
-开发平台：win10
-开发工具：IntelliJ IDEA 2018
-语言：java  jdk：1.8
-项目管理工具：Maven 3
-版本控制器：git 2.9.0
-项目框架：springboot +JPA+thymeleaf
-数据库：mysql 引擎：InnoDB（支持事务）
-容器：spring-boot-starter-tomcat
-缓存：ehcache
-分页：Pageable（JPA）
-持久态转游离态：Session session = entityManager.unwrap(Session.class); // 获取JPA session
- session.evict(content); //将持久对象转换为游离态
-API文档：SpringBoot&Swagger构建REST API并生成API文档
+ ============================  
+ 一．招生展示系统：<br>
+开发平台：win10<br>
+开发工具：IntelliJ IDEA 2018<br>
+语言：java  jdk：1.8<br>
+项目管理工具：Maven 3<br>
+版本控制器：git 2.9.0<br>
+项目框架：springboot +JPA+thymeleaf<br>
+数据库：mysql 引擎：InnoDB（支持事务）<br>
+容器：spring-boot-starter-tomcat<br>
+缓存：ehcache<br>
+分页：Pageable（JPA）<br>
+持久态转游离态：Session session = entityManager.unwrap(Session.class); // 获取JPA session<br>
+ session.evict(content); //将持久对象转换为游离态<br>
+API文档：SpringBoot&Swagger构建REST API并生成API文档<br>
 
-二．App智慧校园（android）
-开发平台：win7
-开发工具：android studio 3.1.2
-语言：java+jdk1.8   android+SDK
-项目管理工具：gradle 4.4 （mavenCentral() 、google()、jcenter()仓库）
-版本控制器：git 2.9.0
-项目框架：OKhttp（网络）+gson（json解析）+glide（图片加载）+logger（日志）+butterknife（注解）+imageselector（图片选择）+umeng（友盟推送）+zxing（扫码）等
-数据库：SQLlite (greenDao辅助)
-视图容器：Activity
-布局文件：layout（相对、线性、网格、表格等布局）
-绘制样式：drawable （icon、.xml）
-菜单：menu
-常用资源文件：values（arrays、attrs、colors、strings、styles、ids、dimens等）
+二．App智慧校园（android）<br>
+开发平台：win7<br>
+开发工具：android studio 3.1.2<br>
+语言：java+jdk1.8   android+SDK<br>
+项目管理工具：gradle 4.4 （mavenCentral() 、google()、jcenter()仓库）<br>
+版本控制器：git 2.9.0<br>
+项目框架：OKhttp（网络）+gson（json解析）+glide（图片加载）+logger（日志）+butterknife（注解）+imageselector（图片选择）+umeng（友盟推送）+zxing（扫码）等<br>
+数据库：SQLlite (greenDao辅助)<br>
+视图容器：Activity<br>
+布局文件：layout（相对、线性、网格、表格等布局）<br>
+绘制样式：drawable （icon、.xml）<br>
+菜单：menu<br>
+常用资源文件：values（arrays、attrs、colors、strings、styles、ids、dimens等）<br>
 
-三．智慧校园中间服务层(转发层)
-开发平台：win7
-开发工具：IntelliJ IDEA 2018
-语言：java  jdk：1.8
-项目管理工具：Maven 3 （nexus私服）
-版本控制器：git 2.9.0
-项目框架：springboot +mybatis+thymeleaf+security
-数据库：mysql 引擎：InnoDB（支持事务）
-容器：undertow（基于NIO 的高性能 Web 嵌入式服务器）
-缓存：redis
-分页：PageHelper（mybatis分页插件）
-开发模式：多module开发模式
-<modules>
-        <module>cn.gmuni.sc.base</module>
-        <module>cn.gmuni.sc.http</module>
-        <module>cn.gmuni.sc.utils</module>
-        <module>cn.gmuni.sc.log</module>
-        <module>cn.gmuni.sc.lost</module>
-        <module>cn.gmuni.sc.college</module>
-        <module>cn.gmuni.sc.transpond</module>
-        <module>cn.gmuni.sc.webapp</module>
-        <module>cn.gmuni.sc.security</module>
-        <module>cn.gmuni.sc.noticenews</module>
-        <module>cn.gmuni.sc.express</module>
-        <module>cn.gmuni.sc.socketclient</module>
-        <module>cn.gmuni.sc.umpush</module>
-        <module>cn.gmuni.sc.user</module>
-        <module>cn.gmuni.sc.score</module>
-        <module>cn.gmuni.sc.pay</module>
-        <module>cn.gmuni.sc.menu</module>
-        <module>cn.gmuni.sc.integral</module>
-        <module>cn.gmuni.sc.userinfo</module>
-        <module>cn.gmuni.sc.wallet</module>
-        <module>cn.gmuni.sc.information</module>
-        <module>cn.gmuni.sc.device</module>
-        <module>cn.gmuni.sc.blower</module>
-        <module>cn.gmuni.sc.devicmanagement</module>
-        <module>cn.gmuni.sc.market</module>
-</modules>
-
-
-四．智慧校园app学校端服务
-开发平台：win7
-开发工具：IntelliJ IDEA 2018
-语言：java  jdk：1.8
-项目管理工具：Maven 3 （nexus私服）
-版本控制器：git 2.9.0
-项目框架：springboot +mybatis+thymeleaf+security
-数据库：mysql 引擎：InnoDB（支持事务）
-容器：undertow（基于NIO 的高性能 Web 嵌入式服务器）
-缓存：redis
-分页：PageHelper（mybatis分页插件）
-开发模式：多module开发模式
- <modules>
-        <module>com.gmunidata.base</module>
-        <module>com.gmunidata.utils</module>
-        <module>com.gmunidata.classinfo</module>
-        <module>com.gmunidata.course</module>
-        <module>com.gmunidata.schedule</module>
-        <module>com.gmunidata.newsNotice</module>
-        <module>com.gmunidata.security</module>
-        <module>com.gmunidata.student</module>
-        <module>com.gmunidata.webapp</module>
-        <module>com.gmunidata.excel</module>
-        <module>com.gmunidata.push</module>
-        <module>com.gmunidata.schoolbus</module>
-</modules>
-五．基础平台
-开发平台：win7
-开发工具：IntelliJ IDEA 2018
-语言：java  jdk：1.8
-项目管理工具：Maven 3 （nexus私服）
-版本控制器：git 2.9.0
-项目框架：springboot +mybatis+thymeleaf+security
-数据库：mysql 引擎：InnoDB（支持事务）
-容器：undertow（基于NIO 的高性能 Web 嵌入式服务器）
-缓存：redis
-分页：PageHelper（mybatis分页插件）
-开发模式：多module开发模式
- <modules>
-        <module>cn.gmuni.utils</module>
-        <module>cn.gmuni.base</module>
-        <module>cn.gmuni.webapp</module>
-        <module>cn.gmuni.security</module>
-        <module>cn.gmuni.sysmenu</module>
-        <module>cn.gmuni.org</module>
-        <module>cn.gmuni.enrollment</module>
-        <module>cn.gmuni.enrollment.subject</module>
-        <module>cn.gmuni.enrollment.guide</module>
-        <module>cn.gmuni.enrollment.config</module>
-        <module>cn.gmuni.enrollment.feature</module>
-        <module>cn.gmuni.enrollment.homepage</module>
-        <module>cn.gmuni.enrollment.resource</module>
-        <module>cn.gmuni.enrollment.sysmenu</module>
-        <module>cn.gmuni.upload</module>
-        <module>cn.gmuni.lookup</module>
-        <module>cn.gmuni.maintenance</module>
-        <module>cn.gmuni.subscribe</module>
-        <module>cn.gmuni.redis</module>
-    </modules>
+三．智慧校园中间服务层(转发层)<br>
+开发平台：win7<br>
+开发工具：IntelliJ IDEA 2018<br>
+语言：java  jdk：1.8<br>
+项目管理工具：Maven 3 （nexus私服）<br>
+版本控制器：git 2.9.0<br>
+项目框架：springboot +mybatis+thymeleaf+security<br>
+数据库：mysql 引擎：InnoDB（支持事务）<br>
+容器：undertow（基于NIO 的高性能 Web 嵌入式服务器）<br>
+缓存：redis<br>
+分页：PageHelper（mybatis分页插件）<br>
+开发模式：多module开发模式<br>
+<modules><br>
+        <module>cn.gmuni.sc.base</module><br>
+        <module>cn.gmuni.sc.http</module><br>
+        <module>cn.gmuni.sc.utils</module><br>
+        <module>cn.gmuni.sc.log</module><br>
+        <module>cn.gmuni.sc.lost</module><br>
+        <module>cn.gmuni.sc.college</module><br>
+        <module>cn.gmuni.sc.transpond</module><br>
+        <module>cn.gmuni.sc.webapp</module><br>
+        <module>cn.gmuni.sc.security</module><br>
+        <module>cn.gmuni.sc.noticenews</module><br>
+        <module>cn.gmuni.sc.express</module><br>
+        <module>cn.gmuni.sc.socketclient</module><br>
+        <module>cn.gmuni.sc.umpush</module><br>
+        <module>cn.gmuni.sc.user</module><br>
+        <module>cn.gmuni.sc.score</module><br>
+        <module>cn.gmuni.sc.pay</module><br>
+        <module>cn.gmuni.sc.menu</module><br>
+        <module>cn.gmuni.sc.integral</module><br>
+        <module>cn.gmuni.sc.userinfo</module><br>
+        <module>cn.gmuni.sc.wallet</module><br>
+        <module>cn.gmuni.sc.information</module><br>
+        <module>cn.gmuni.sc.device</module><br>
+        <module>cn.gmuni.sc.blower</module><br>
+        <module>cn.gmuni.sc.devicmanagement</module><br>
+        <module>cn.gmuni.sc.market</module><br>
+</modules><br>
 
 
-六．其他技术
-Cas单点登录集成（统一认证平台）
-Appcan开发工具使用（基于html+js+css开发的app包含android与ios）
-Jeplus软件快速开发平台
-Linux系统使用：VMware Workstation Pro（虚拟机工作站）+Centos 7 64位
-xshell6：终端模拟管理系统（命令行）
-Xftp 6 :传输软件（SFTP、FTP 文件传输软件）
-Postman：接口测试（Restful API接口测试）
-浏览器：Google Chrome（版本 70.0.3538.110（正式版本） （64 位））
-C#开发：c#语言+Visual Studio 2017+iis
-Zentao：禅道项目管理软件
+四．智慧校园app学校端服务<br>
+开发平台：win7<br>
+开发工具：IntelliJ IDEA 2018<br>
+语言：java  jdk：1.8<br>
+项目管理工具：Maven 3 （nexus私服）<br>
+版本控制器：git 2.9.0<br>
+项目框架：springboot +mybatis+thymeleaf+security<br>
+数据库：mysql 引擎：InnoDB（支持事务）<br>
+容器：undertow（基于NIO 的高性能 Web 嵌入式服务器）<br>
+缓存：redis<br>
+分页：PageHelper（mybatis分页插件）<br>
+开发模式：多module开发模式<br>
+ <modules><br>
+        <module>com.gmunidata.base</module><br>
+        <module>com.gmunidata.utils</module><br>
+        <module>com.gmunidata.classinfo</module><br>
+        <module>com.gmunidata.course</module><br>
+        <module>com.gmunidata.schedule</module><br>
+        <module>com.gmunidata.newsNotice</module><br>
+        <module>com.gmunidata.security</module><br>
+        <module>com.gmunidata.student</module><br>
+        <module>com.gmunidata.webapp</module><br>
+        <module>com.gmunidata.excel</module><br>
+        <module>com.gmunidata.push</module><br>
+        <module>com.gmunidata.schoolbus</module><br>
+</modules><br>
+五．基础平台<br>
+开发平台：win7<br>
+开发工具：IntelliJ IDEA 2018<br>
+语言：java  jdk：1.8<br>
+项目管理工具：Maven 3 （nexus私服）<br>
+版本控制器：git 2.9.0<br>
+项目框架：springboot +mybatis+thymeleaf+security<br>
+数据库：mysql 引擎：InnoDB（支持事务）<br>
+容器：undertow（基于NIO 的高性能 Web 嵌入式服务器）<br>
+缓存：redis<br>
+分页：PageHelper（mybatis分页插件）<br>
+开发模式：多module开发模式<br>
+ <modules><br>
+        <module>cn.gmuni.utils</module><br>
+        <module>cn.gmuni.base</module><br>
+        <module>cn.gmuni.webapp</module><br>
+        <module>cn.gmuni.security</module><br>
+        <module>cn.gmuni.sysmenu</module><br>
+        <module>cn.gmuni.org</module><br>
+        <module>cn.gmuni.enrollment</module><br>
+        <module>cn.gmuni.enrollment.subject</module><br>
+        <module>cn.gmuni.enrollment.guide</module><br>
+        <module>cn.gmuni.enrollment.config</module><br>
+        <module>cn.gmuni.enrollment.feature</module><br>
+        <module>cn.gmuni.enrollment.homepage</module><br>
+        <module>cn.gmuni.enrollment.resource</module><br>
+        <module>cn.gmuni.enrollment.sysmenu</module><br>
+        <module>cn.gmuni.upload</module><br>
+        <module>cn.gmuni.lookup</module><br>
+        <module>cn.gmuni.maintenance</module><br>
+        <module>cn.gmuni.subscribe</module><br>
+        <module>cn.gmuni.redis</module><br>
+    </modules><br>
 
 
+六．其他技术<br>
+Cas单点登录集成（统一认证平台）<br>
+Appcan开发工具使用（基于html+js+css开发的app包含android与ios）<br>
+Jeplus软件快速开发平台<br>
+Linux系统使用：VMware Workstation Pro（虚拟机工作站）+Centos 7 64位<br>
+xshell6：终端模拟管理系统（命令行）<br>
+Xftp 6 :传输软件（SFTP、FTP 文件传输软件）<br>
+Postman：接口测试（Restful API接口测试）<br>
+浏览器：Google Chrome（版本 70.0.3538.110（正式版本） （64 位））<br>
+C#开发：c#语言+Visual Studio 2017+iis<br>
+Zentao：禅道项目管理软件<br>
+
+============================
  
 免费的编程中文书籍索引
 ============================
