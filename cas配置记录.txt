@@ -1,0 +1,671 @@
+cas集成参考：https://blog.csdn.net/qq_34021712/article/list/2?t=1
+  https://blog.csdn.net/u010475041/article/category/7156505
+  企业级单点登录服务:http://www.cassso-china.cn/apereo_github_cas_5.2/apereo.github.io/cas/5.2.x/
+1.sso父级工程创建
+2.添加子模块sso-server（服务中心）
+由于这个项目是spring boot，所以可以用java -jar指令直接运行的，那么我们运行交给cas提供的脚本吧
+所有执行命令需要在所在的工程下执行
+
+启动命令:
+build.cmd run
+
+debug命令:
+开放了5000远程调整端口
+build.cmd debug
+  
+打包：
+build.cmd package  
+
+访问路径http://localhost:8444/cas 
+默认用户名/密码为：casuser/Mellon
+
+3.添加子模块sso-config（配置中心）
+启动
+mvn spring-boot:run
+试试访问：http://localhost:8888/config/sso/dev
+
+
+尝试运行：先运行服务中心在运行配置中心
+运行sso-config
+mvn spring-boot:run
+运行sso-server
+build.cmd run
+
+最后访问：http://localhost:8444/cas
+用户名/密码：casuser/Mellon
+登录成功则配置成功
+
+4.https配置
+自签名服务端需要导入证书
+重点：
+passport.sso.com 是我们测试的域名
+测试时需要把本地机的ip映射为passport.sso.com设到系统HOSTS文件
+证书处理
+
+密钥生成：
+生成步骤，各参数含义：
+-genkeypair 生成密钥
+-keyalg 指定密钥算法，这时指定RSA,
+-keysize 指定密钥长度，默认是1024位,这里指定2048，长一点，我让你破解不了（哈哈…）,
+-siglag 指定数字签名算法，这里指定为SHA1withRSA算法
+-validity 指定证书有效期，这里指定36500天，也就是100年，我想我的应用用不到那么长时间
+-alias 指定别名，这里是cas.server.com
+-keystore 指定密钥库存储位置，这里存在d盘
+-dname 指定用户信息，不用一个一个回答它的问题了；
+cmd中指令：
+keytool -genkeypair -keyalg RSA -keysize 2048 -sigalg SHA1withRSA -validity 36500 -alias passport.sso.com -keystore d:/tomcat.keystore -dname "CN=passport.sso.com,OU=kawhi,O=carl,L=GuangZhou,ST=GuangDong,C=CN"
+输入上述命令，下面密码我们输入123456,然后一直回车，就在d盘生成了tomcat.keystore文件；
+
+证书生成：
+在cmd下输入如下命令，密码为上面输入的123456：
+keytool -exportcert -alias passport.sso.com -keystore d:/tomcat.keystore  -file d:/tomcat.cer -rfc
+证书生成在：d:/tomcat.cer
+是
+导入cacerts证书库
+输入密码为 changeit并同意导入:
+keytool -import -alias passport.sso.com -keystore %JAVA_HOME%\jre\lib\security\cacerts -file d:/tomcat.cer -trustcacerts
+keytool -import -alias passport.sso.com -keystore "C:\Program Files\Java\jre1.8.0_161\lib\security" -file d:/tomcat.cer -trustcacerts
+keytool -import -v -trustcacerts -alias passport.sso.com -file d:/tomcat.cer -storepass changeit -keystore "C:\Program Files\Java\jdk1.8.0_161\jre\lib\security\cacerts"
+检查是否导入成功
+keytool -list -keystore "%JAVA_HOME%\jre\lib\security\cacerts" | findstr/i server
+keytool -list -v -alias passport.sso.com -keystore "C:\Program Files\Java\jdk1.8.0_161\jre\lib\security\cacerts" -storepass changeit
+
+删除证书
+keytool -delete -alias passport.sso.com -keystore "C:\Program Files\Java\jdk1.8.0_161\jre\lib\security\cacerts" -storepass changeit
+
+默认情况下，cacerts密钥库的密码为changeit。
+
+把tomcat.keystore拷贝到sso-server\src\main\resources下
+sso-dev.properties中新增
+#SSL配置
+server.ssl.enabled=true
+server.ssl.key-store=classpath:tomcat.keystore
+server.ssl.key-store-password=123456
+server.ssl.keyAlias=passport.sso.com
+
+把本机的ip映射为passport.sso.com设到系统HOSTS文件 
+C:\WINDOWS\system32\drivers\etc
+Hosts文件最后添加：127.0.0.1 passport.sso.com
+
+重启配置中心
+启动sso-server
+访问 https://passport.sso.com:8444/cas/login 
+
+5.集成mysql数据库（密码MD5和密码加盐）
+建表并插入数据
+#表结构使用的是之前shiro用户表
+DROP TABLE IF EXISTS `user_info`;
+CREATE TABLE `user_info` (
+  `uid` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) DEFAULT '' COMMENT '用户名',
+  `password` varchar(256) DEFAULT NULL COMMENT '登录密码',
+  `name` varchar(256) DEFAULT NULL COMMENT '用户真实姓名',
+  `id_card_num` varchar(256) DEFAULT NULL COMMENT '用户身份证号',
+  `state` char(1) DEFAULT '0' COMMENT '用户状态：0:正常状态,1：用户被锁定',
+  PRIMARY KEY (`uid`),
+  UNIQUE KEY `username` (`username`) USING BTREE,
+  UNIQUE KEY `id_card_num` (`id_card_num`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+#插入用户信息表
+INSERT INTO user_info(uid,username,`password`,`name`,id_card_num) VALUES (null,'admin','123456','齐德龙','133333333333333333');
+
+修改pom.xml
+sso-server/pom.xml：
+<dependency>
+    <groupId>org.apereo.cas</groupId>
+    <artifactId>cas-server-support-jdbc</artifactId>
+    <version>${cas.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.apereo.cas</groupId>
+    <artifactId>cas-server-support-jdbc-drivers</artifactId>
+    <version>${cas.version}</version>
+</dependency>
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>5.1.36</version>
+</dependency>
+将默认的静态用户名和密码配置注释掉（配置中心sso-dev.properties中）
+cas.authn.accept.users=casuser::Mellon
+
+配置中心sso-dev.properties中
+#添加jdbc认证
+cas.authn.jdbc.query[0].sql=SELECT * FROM user_info WHERE username =?
+#那一个字段作为密码字段
+cas.authn.jdbc.query[0].fieldPassword=password
+#配置数据库连接
+cas.authn.jdbc.query[0].url=jdbc:mysql://192.168.3.230:3306/zhu_enrollment?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
+cas.authn.jdbc.query[0].dialect=org.hibernate.dialect.MySQLDialect
+#数据库用户名
+cas.authn.jdbc.query[0].user=kaifa
+#数据库密码
+cas.authn.jdbc.query[0].password=kaifa_123
+#mysql驱动
+cas.authn.jdbc.query[0].driverClass=com.mysql.jdbc.Driver
+
+尝试现在启动程序,使用admin/123456登录成功，可以从数据库获取信息登录（https://passport.sso.com:8444/cas/login）
+
+加密处理-------------------------------
+添加MD5加密配置
+#配置加密策略
+cas.authn.jdbc.query[0].passwordEncoder.type=DEFAULT
+cas.authn.jdbc.query[0].passwordEncoder.characterEncoding=UTF-8
+cas.authn.jdbc.query[0].passwordEncoder.encodingAlgorithm=MD5
+
+这个时候再次使用账号admin 密码123456登录已经无法认证通过了,将123456的MD5密文e10adc3949ba59abbe56e057f20f883e放入数据库,这个时候再登录就可以了。
+
+对密码进行盐值处理(推荐)
+https://apereo.github.io/cas/5.3.x/installation/Configuration-Properties.html#database-authentication 
+
+上一步只是对密码进行了简单的加密，两个帐号有可能相同的值，就能判断出密码是一致的，但通过此方案，大大增加了难度，所以安全系数也高了许多，推荐使用策略。 
+在上面的基础上，再添加如下代码，可以共存,：
+#配置加密策略
+cas.authn.jdbc.query[0].passwordEncoder.type=DEFAULT
+cas.authn.jdbc.query[0].passwordEncoder.characterEncoding=UTF-8
+cas.authn.jdbc.query[0].passwordEncoder.encodingAlgorithm=MD5
+#加密迭代次数
+cas.authn.jdbc.encode[0].numberOfIterations=2
+#该列名的值可替代上面的值，但对密码加密时必须取该值进行处理
+cas.authn.jdbc.encode[0].numberOfIterationsFieldName=
+#盐值固定列
+cas.authn.jdbc.encode[0].saltFieldName=username
+#静态盐值
+cas.authn.jdbc.encode[0].staticSalt=.
+cas.authn.jdbc.encode[0].sql=SELECT * FROM user_info WHERE username =?
+#对处理盐值后的算法
+cas.authn.jdbc.encode[0].algorithmName=MD5
+cas.authn.jdbc.encode[0].passwordFieldName=password
+cas.authn.jdbc.encode[0].expiredFieldName=expired
+cas.authn.jdbc.encode[0].disabledFieldName=disabled
+#数据库连接
+cas.authn.jdbc.encode[0].url=jdbc:mysql://192.168.3.230:3306/zhu_enrollment?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
+cas.authn.jdbc.encode[0].dialect=org.hibernate.dialect.MySQL5Dialect
+cas.authn.jdbc.encode[0].driverClass=com.mysql.jdbc.Driver
+cas.authn.jdbc.encode[0].user=kaifa
+cas.authn.jdbc.encode[0].password=kaifa_123
+注意：如果两种方式都配置的话,默认先用普通MD5验证，如果验证失败，打印异常日志,然后再使用加盐方式验证。
+
+加盐密码生成：
+package com.springboot.test.shiro;
+
+import org.apache.shiro.crypto.hash.ConfigurableHashService;
+import org.apache.shiro.crypto.hash.DefaultHashService;
+import org.apache.shiro.crypto.hash.HashRequest;
+import org.apache.shiro.util.ByteSource;
+import org.junit.Test;
+
+/**
+ * @author: wangsaichao
+ * @date: 2018/7/7
+ * @description:
+ */
+public class PasswordSaltTest {
+    private String staticSalt = ".";
+    private String algorithmName = "MD5";
+    private String encodedPassword = "123456";
+    private String dynaSalt = "test";
+
+    @Test
+    public void test() throws Exception {
+        ConfigurableHashService hashService = new DefaultHashService();
+        hashService.setPrivateSalt(ByteSource.Util.bytes(this.staticSalt));
+        hashService.setHashAlgorithmName(this.algorithmName);
+        hashService.setHashIterations(2);
+        HashRequest request = new HashRequest.Builder()
+                .setSalt(dynaSalt)
+                .setSource(encodedPassword)
+                .build();
+        String res =  hashService.computeHash(request).toHex();
+        System.out.println(res);
+    }
+}
+往数据库中再插入一条记录：
+密码是通过上面的PasswordSaltTest 生成的
+INSERT INTO user_info(uid,username,`password`,`name`,id_card_num) VALUES (null,'test','ed0290f05224a188160858124a5f5077','超哥哥','166666666666666666');
+
+测试结果：
+使用admin/123456登录成功(普通MD5可用) 
+使用test/123456登录成功(加盐密码可用)
+
+.假如某些特殊情况下,密码规则不符合以上,我们就需要自定义密码校验
+https://apereo.github.io/cas/5.3.x/installation/Configuration-Properties-Common.html#password-encoding 
+
+自定义密码认证：
+CAS在身份验证处理,基本都是基于Spring Security对密码编码, 
+如果您计划设计自己的密码编码器或编写脚本来执行此操作，则可能还需要确保覆盖在运行时具有以下模块：
+（配置中心加入如下sso-config）
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-core</artifactId>
+</dependency>
+
+自定义密码认证类
+package com.cas;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+
+/**
+ * @author: wangsaichao
+ * @date: 2018/7/8
+ * @description: 自定义密码验证
+ */
+public class CustomPasswordEncoder implements PasswordEncoder{
+
+    private final Logger logger = LoggerFactory.getLogger(CustomPasswordEncoder.class);
+
+    /**
+     * 对密码进行加密
+     * @param rawPassword
+     * @return
+     */
+    @Override
+    public String encode(CharSequence rawPassword) {
+        try {
+            //对数据进行md5加密
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(rawPassword.toString().getBytes());
+            String pwd = new BigInteger(1, md.digest()).toString(16);
+            logger.info("encode方法：加密前（ {} ），加密后（ {} ）",rawPassword,pwd);
+            return pwd;
+        } catch (Exception e) {
+            logger.error("对密码进行md5异常",e);
+            return null;
+        }
+    }
+
+    /**
+     * 判断密码是否匹配
+     * @param rawPassword
+     * @param encodedPassword
+     * @return
+     */
+    @Override
+    public boolean matches(CharSequence rawPassword, String encodedPassword) {
+        // 判断密码为空,直接返回false
+        if (StringUtils.isBlank(rawPassword)) {
+            return false;
+        }
+
+        //调用上面的encode 对请求密码进行MD5处理
+        String pass = this.encode(rawPassword.toString());
+
+        logger.info("matches方法：请求密码为：{} ，数据库密码为：{}，加密后的请求密码为：{}",rawPassword,encodedPassword,pass);
+        //比较密码是否相等
+        return pass.equals(encodedPassword);
+    }
+}
+修改application.properties 文件，将passwordEncoder.type改为自己的实现类
+#配置加密策略
+cas.authn.jdbc.query[0].passwordEncoder.type=com.cas.CustomPasswordEncoder
+cas.authn.jdbc.query[0].passwordEncoder.characterEncoding=UTF-8
+cas.authn.jdbc.query[0].passwordEncoder.encodingAlgorithm=MD5
+
+在log4j2.xml中添加以下配置,否则不打印日志
+只是在控制台打印,看一下效果
+
+<AsyncLogger name="com.cas.CustomPasswordEncoder" level="info" includeLocation="true">
+    <AppenderRef ref="casConsole"/>
+</AsyncLogger>
+1
+2
+3
+测试
+使用admin/123456登录,打印日志
+
+6.自定义登录验证(认证之Shiro、Rest)
+Shiro认证
+sso-server中添加
+<dependency>
+  <groupId>org.apereo.cas</groupId>
+  <artifactId>cas-server-support-generic</artifactId>
+  <version>${cas.version}</version>
+</dependency>
+加了依赖即将支持三种校验方式，包括文件存储用户校验器、拒绝用户校验器、shiro校验器cas系统配置
+
+sso-config配置中心sso-dev.properties添加如下：
+# Shiro Authentication 开始
+#允许登录的用户，必须要有以下权限，否则拒绝，多个逗号隔开
+cas.authn.shiro.requiredPermissions=staff
+#允许登录的用户，必须要有以下权限，否则拒绝，多个逗号隔开
+cas.authn.shiro.requiredRoles=admin
+#shir配置文件位置
+cas.authn.shiro.config.location=classpath:shiro.ini
+#shiro name 唯一
+cas.authn.shiro.name=cas-shiro
+# 与Query Authentication一致的加密策略
+cas.authn.shiro.passwordEncoder.type=DEFAULT
+# cas.authn.shiro.passwordEncoder.characterEncoding=UTF-8
+cas.authn.shiro.passwordEncoder.encodingAlgorithm=MD5
+# Shiro Authentication 结束
+
+sso-server 中添加classpath:shiro.ini
+shiro.ini文件：
+[main]
+cacheManager = org.apache.shiro.cache.MemoryConstrainedCacheManager
+securityManager.cacheManager = $cacheManager
+
+[users]
+#密码123
+admin = 202cb962ac59075b964b07152d234b70, admin
+#不可登录，因为配置了需要角色admin
+#密码123456
+test = e10adc3949ba59abbe56e057f20f883e, developer
+
+[roles]
+admin = system,admin,staff,superuser:*
+developer = commit:*
+
+
+测试
+尝试登录：
+admin/123 成功
+test/123456 失败（没有权限）
+
+Rest 认证
+
+配置
+application.properties
+
+#REST 认证开始
+#请求远程调用接口
+cas.authn.rest.uri=http://localhost:8881/login
+#加密策略
+cas.authn.rest.passwordEncoder.type=DEFAULT
+cas.authn.rest.passwordEncoder.characterEncoding=UTF-8
+#加密算法
+cas.authn.rest.passwordEncoder.encodingAlgorithm=MD5
+#REST 结束
+
+
+7.Service配置
+cas客户端接入称之为service，必须经过cas的允许才能进行登录，当然不同的客户端可以做不同的事情，其中包括：
+自定义主题（各客户端登录页自定义）
+自定义属性（服务属性（固定）与用户属性（动态））
+自定义协议
+自定义登录后跳转方式，跳转路径
+授权策略（拒绝属性、可登录时间范围限制、等等）
+拒绝授权模式
+
+
+JSON 配置:
+需求：对所有http://localhost开头请求的service进行允许认证
+sso-server中：
+在resources/services下新建文件Localhost-10000002.json
+
+{
+  "@class": "org.apereo.cas.services.RegexRegisteredService",
+  "serviceId": "^(http)://localhost.*",
+  "name": "本地服务",
+  "id": 10000002,
+  "description": "这是一个本地允许的服务，通过localhost访问都允许通过",
+  "evaluationOrder": 1
+}
+
+注意：
+json文件名字规则为${name}-${id}.json,id必须为json文件内容id一致
+json文件解释：
+@class：必须为org.apereo.cas.services.RegisteredService的实现类，对其他属性进行一个json反射对象，常用的有RegexRegisteredService，匹配策略为id的正则表达式
+serviceId：唯一的服务id
+name： 服务名称，会显示在默认登录页
+id：全局唯一标志
+description：服务描述，会显示在默认登录页
+evaluationOrder： 匹配争取时的执行循序
+
+
+启用识别
+上面新建了json文件cas还不知道要去识别json，需要打开开关
+
+application.properties
+
+#开启识别json文件，默认false
+cas.serviceRegistry.initFromJson=true
+
+#自动扫描服务配置，默认开启
+#cas.serviceRegistry.watcherEnabled=true
+#120秒扫描一遍
+#cas.serviceRegistry.repeatInterval=120000
+#延迟15秒开启
+#cas.serviceRegistry.startDelay=15000
+
+#默认json/yml资源加载路径为resources/services
+#cas.serviceRegistry.config.location=classpath:/services
+--------------------- 
+
+8.CAS单点登录-Cas-Management
+cas-management也简称为service-management可以理解为服务管理。 
+cas为我们提供了对service的管理平台，通过UI界面进行操作管理
+新建模块：与service模块一样  <module>sso-management</module>
+
+pom.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ 版权所有.(c)2008-2017. 卡尔科技工作室
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>sso</artifactId>
+        <groupId>com.carl.auth</groupId>
+        <version>1.4.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>sso-management</artifactId>
+    <packaging>war</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.rimerosolutions.maven.plugins</groupId>
+                <artifactId>wrapper-maven-plugin</artifactId>
+                <version>0.0.5</version>
+                <configuration>
+                    <verifyDownload>true</verifyDownload>
+                    <checksumAlgorithm>MD5</checksumAlgorithm>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <warName>cas-management</warName>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <recompressZippedFiles>false</recompressZippedFiles>
+                    <archive>
+                        <compress>false</compress>
+                        <manifestFile>${project.build.directory}/war/work/org.apereo.cas/cas-management-webapp/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
+                    <overlays>
+                        <overlay>
+                            <groupId>org.apereo.cas</groupId>
+                            <artifactId>cas-management-webapp</artifactId>
+                            <!--原有的服务不再初始化进去-->
+                            <excludes>
+                                <exclude>**/services/*</exclude>
+                                <exclude>**/application.properties</exclude>
+                                <exclude>**/bootstrap.properties</exclude>
+                            </excludes>
+                        </overlay>
+                    </overlays>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+            </plugin>
+        </plugins>
+        <finalName>cas-management</finalName>
+    </build>
+
+    <dependencies>
+        <!--mongodb存储客户端配置，持久化配置与客户端配置系统配置必须一致-->
+        <!--<dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-mongo-service-registry</artifactId>
+            <version>${cas.version}</version>
+        </dependency>-->
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-management-webapp</artifactId>
+            <version>${cas.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+</project>
+
+bootstrap.yml
+当然还需要对启动的相关配置进行调整
+
+#
+# 版权所有.(c)2008-2017. 卡尔科技工作室
+#
+spring:
+  application:
+    name: cas-management
+  cloud:
+    config:
+      enable: true
+      watch:
+        enabled: true
+      fail-fast: true
+  profiles:
+    active: dev
+logging:
+  file: logs/cas-management.log
+info:
+  name: 接入管理系统
+health:
+  config:
+    enable: true
+
+# spring cloud config
+---
+spring:
+  profiles: dev
+  cloud:
+    config:
+      uri: http://localhost:8888/config
+---
+
+
+配置中心添加：
+cas-management-dev.properties
+另外这个文件是放在与配置中心
+
+#
+# 版权所有.(c)2008-2017. 卡尔科技工作室
+#
+
+
+##
+# CAS Thymeleaf Views
+#
+spring.thymeleaf.cache=false
+spring.thymeleaf.mode=HTML
+
+##
+# Embedded CAS Tomcat Container
+#
+server.context-path=/cas-management
+server.port=8081
+
+
+#
+# CAS 动态认证管理开始
+#
+cas.server.name=https://passport.sso.com:8443
+cas.server.prefix=${cas.server.name}
+
+cas.mgmt.serverName=http://passport.sso.com:8081
+
+
+
+# 静态管理认证开始
+#通过sso登录后的用户，必须存在该文件下，否则无法登录，当然这些用户可以通过ldap进行动态管理
+cas.mgmt.userPropertiesFile=classpath:/user-details.properties
+cas.mgmt.defaultLocale=zh_CN
+# 静态管理认证结束
+
+##
+# CAS Web Application Config
+#
+server.session.timeout=1800
+server.session.cookie.http-only=true
+server.session.tracking-modes=COOKIE
+
+##
+# CAS Cloud Bus Configuration
+# Please leave spring.cloud.bus.enabled set to false
+#
+spring.cloud.bus.enabled=false
+
+##
+# Actuator Endpoint Security Defaults
+#
+endpoints.enabled=true
+endpoints.actuator.enabled=true
+
+
+# mongo db配置（客户端持久化）
+#cas.serviceRegistry.mongo.idleTimeout=30000
+#cas.serviceRegistry.mongo.port=27017
+#cas.serviceRegistry.mongo.dropCollection=false
+#cas.serviceRegistry.mongo.socketKeepAlive=false
+#cas.serviceRegistry.mongo.password=123456
+#cas.serviceRegistry.mongo.collectionName=cas-service-registry
+#cas.serviceRegistry.mongo.databaseName=cas-mongo-database
+#cas.serviceRegistry.mongo.timeout=5000
+#cas.serviceRegistry.mongo.userId=cas-config
+#cas.serviceRegistry.mongo.writeConcern=NORMAL
+#cas.serviceRegistry.mongo.host=127.0.0.1
+#cas.serviceRegistry.mongo.conns.lifetime=60000
+#cas.serviceRegistry.mongo.conns.perHost=10
+# mongo db配置（客户端持久化）
+
+management.security.enabled=false
+
+
+#tomcat配置
+server.max-http-header-size=2097152
+server.use-forward-headers=true
+server.connection-timeout=20000
+server.error.include-stacktrace=ALWAYS
+server.tomcat.max-http-post-size=2097152
+server.tomcat.basedir=build/tomcat
+server.tomcat.accesslog.enabled=true
+server.tomcat.accesslog.pattern=%t %a "%r" %s (%D ms)
+server.tomcat.accesslog.suffix=.log
+server.tomcat.max-threads=10
+server.tomcat.port-header=X-Forwarded-Port
+server.tomcat.protocol-header=X-Forwarded-Proto
+server.tomcat.protocol-header-https-value=https
+server.tomcat.remote-ip-header=X-FORWARDED-FOR
+server.tomcat.uri-encoding=UTF-8
+spring.http.encoding.charset=UTF-8
+spring.http.encoding.enabled=true
+spring.http.encoding.force=true
+测试
+启动步骤： 
+1. sso-config 
+2. sso-server 
+3. sso-management
+
+启动成功后试着访问http://localhost:8081/cas-management
+
+若不成功，你应该看到访问的是https://passport.sso.com:8443/cas/login/xxx，需要看导入https设置hosts文件(浏览器导入证书tomcat.cer切记)
+
+
+
