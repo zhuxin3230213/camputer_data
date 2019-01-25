@@ -83,6 +83,8 @@
 *CAS SS0 单点登录<br>
  [CAS官方文档](https://apereo.github.io/cas/5.1.x/index.html)<br>
  [CAS单点登录教程](https://blog.csdn.net/u010475041/article/category/7156505)<br>
+*DOS 命令大全 <br>
+[DOS命令大全(经典收藏)](https://www.cnblogs.com/wyt007/p/9390567.html)
 
  一．招生展示系统：<br>
 开发平台：win10<br>
